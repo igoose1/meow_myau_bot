@@ -1,6 +1,5 @@
 import random
 import telebot
-import time
 import logging
 
 token = "<TOKEN>"
