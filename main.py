@@ -15,7 +15,7 @@ bot = telebot.TeleBot(token)
 @bot.message_handler(commands=['help'])
 def help_message(message):
     bot.logging('{id} -> help'.format(id=message.chat.id))
-    bot.send_message(message.chat.id, text)
+    bot.send_message(message.chat.id, help_text)
 
 
 @bot.message_handler(commands=['start'])
