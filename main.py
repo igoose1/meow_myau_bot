@@ -1,47 +1,40 @@
 import random
 import telebot
 import time
+import logging
 
-token = "498542758:AAHMsig1Ka4ZQm-d7RAHeepSoho8gRcQlYk"
-
+token = "<TOKEN>"
+REPLAYCING_TEXT = 'мяу'
+END_TEXT = '^^'
+help_text = """Напиши любое слово этому боту, а он добавит туда немного няшности ^^
+"""
 
 bot = telebot.TeleBot(token)
 
 
 @bot.message_handler(commands=['help'])
-def help(message):
-    text = """
-Напиши любое слово этому боту, а он добавит туда немного няшности ^^
-"""
+def help_message(message):
+    bot.logging('{id} -> help'.format(id=message.chat.id))
     bot.send_message(message.chat.id, text)
 
 
 @bot.message_handler(commands=['start'])
-def start(message):
-    print(str(message).encode('utf-8'))
-    text = """
-Любишь кошечек?
-Тогда напиши любое слово этому боту, а он добавит туда немного няшности ^^
-"""
-    bot.send_message(message.chat.id, text)
+def start_message(message):
+    help_mesasge(message)
     bot.send_photo(message.chat.id, open('start.png', 'rb'))
 
 
 @bot.message_handler(content_types=["text"])
 def meow(message):
-    text = ""
-
+    res_list = list()
     for word in message.text.split():
-        if not random.randint(0, 2):
-            text += 'мяу '
+        if random.choice([True] + [False] * 2):
+            res_list.append(REPLAYCING_TEXT)
         else:
-            text += word + ' '
+            res_list.append(word)
 
-    # text = text.lower() if random.getrandbits(1) else text.upper()
-    text += '^^'
-    bot.send_message(message.chat.id, text)
-    time.sleep(0.2)
-    bot.send_message(124343817, str(message))
+    res_list.append(END_TEXT)
+    bot.send_message(message.chat.id, ' '.join(res_list))
 
 
 if __name__ == '__main__':
